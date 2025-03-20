@@ -1,0 +1,99 @@
+# Use the base Ubuntu Jammy image
+FROM ubuntu:jammy
+
+# Add a label with handler and GitHub link
+LABEL handler="Srindot"
+LABEL github="https://github.com/Srindot"
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
+
+# Update system and install required packages including apt-utils
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+    apt-utils \
+    bzip2 \
+    ca-certificates \
+    ccache \
+    cmake \
+    cppcheck \
+    curl \
+    dirmngr \
+    doxygen \
+    file \
+    g++ \
+    gcc \
+    gdb \
+    git \
+    gnupg \
+    gosu \
+    lcov \
+    libfreetype6-dev \
+    libgtest-dev \
+    libpng-dev \
+    libssl-dev \
+    lsb-release \
+    make \
+    ninja-build \
+    openjdk-11-jdk \
+    openjdk-11-jre \
+    libvecmath-java \
+    openssh-client \
+    pkg-config \
+    python3-dev \
+    python3-pip \
+    rsync \
+    shellcheck \
+    tzdata \
+    unzip \
+    valgrind \
+    wget \
+    xsltproc \
+    zip \
+    gedit && \
+    apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /tmp/* /var/tmp/*
+
+# Set up and configure locales
+RUN apt-get update && apt-get install -y locales apt-utils && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+
+# Add ROS2 repository and install ROS2 Humble
+RUN apt-get install -y software-properties-common && \
+    add-apt-repository universe && \
+    apt-get update && apt-get install -y curl && \
+    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" > /etc/apt/sources.list.d/ros2.list' && \
+    apt-get update && apt-get upgrade -y && \
+    apt-get install -y ros-humble-desktop ros-dev-tools && \
+    echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
+# Install Python packages and downgrade setuptools
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install --user empy==3.3.4 pyros-genmsg setuptools==70.0.0
+
+# Clone PX4 repository and set up the environment
+RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive && \
+    bash ./PX4-Autopilot/Tools/setup/ubuntu.sh && \
+    cd PX4-Autopilot && \
+    make px4_sitl
+
+# Clone and build Micro XRCE-DDS Agent with fixed FastDDS tag
+RUN git clone -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && \
+    cd Micro-XRCE-DDS-Agent && \
+    sed -i '99s/.*/set(_fastdds_tag 2.12.1)/' CMakeLists.txt && \
+    mkdir build && cd build && \
+    cmake .. && \
+    make && \
+    make install && \
+    ldconfig /usr/local/lib/
+
+# Install QGroundControl
+RUN usermod -a -G dialout root && \
+    apt-get remove modemmanager -y && \
+    apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev wget
