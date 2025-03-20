@@ -8,8 +8,8 @@ This repo provides a Dockerized development environment for:
 
 ## Repository Structure
 
-- [`ros2-humble/`][https://github.com/Srindot/ROS-docker-setup/tree/main/ros2-humble] - Setup for ROS2 Humble.
-- [`ros2-gazebo-px4/`][https://github.com/Srindot/ROS-docker-setup/tree/main/ros2_humble-px4-gazebo_ignition] - Setup for ROS2, Gazebo, and PX4 simulation.
+- [`ros2-humble/`](https://github.com/Srindot/ROS-docker-setup/tree/main/ros2-humble) - Setup for ROS2 Humble.
+- [`ros2-gazebo-px4/`](https://github.com/Srindot/ROS-docker-setup/tree/main/ros2_humble-px4-gazebo_ignition) - Setup for ROS2, Gazebo, and PX4 simulation.
 
 ---
 
