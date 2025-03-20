@@ -15,9 +15,10 @@ This repo provides a Dockerized development environment for:
 
 ## Cloning the Repository
 For setting up the environment clone this repository:
-bash ```
+```bash 
 gitclone
 ```
+
 1. ROS2 Humble Setup
 Building the Docker Image
 Navigate to the ros2-humble folder:
