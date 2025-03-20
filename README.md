@@ -21,8 +21,6 @@ To start, clone this repository using:
 cd <repository-name>
 \\
 
-\\\Your command or code here \\\
-
 1. ROS2 Humble Setup
 Building the Docker Image
 Navigate to the ros2-humble folder:
@@ -55,7 +53,7 @@ Replace <image-name> with the tag you used during the Docker build.
 Building the Docker Image
 Navigate to the ros2-gazebo-px4 folder:
 
-bash
+bash'''
 cd ros2-gazebo-px4
 Build the Docker image:
 
