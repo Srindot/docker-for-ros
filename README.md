@@ -15,8 +15,9 @@ This repo provides a Dockerized development environment for:
 
 ## Cloning the Repository
 For setting up the environment clone this repository:
+
 ```bash 
-gitclone
+git clone https://github.com/Srindot/ROS-docker-setup.git
 ```
 
 1. ROS2 Humble Setup
