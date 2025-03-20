@@ -1,0 +1,56 @@
+FROM ubuntu:jammy
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ROS_DISTRO=humble
+
+# Set locale to US English
+RUN apt update && apt install -y locales \
+    && locale-gen en_US en_US.UTF-8 \
+    && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+
+# Install software-properties-common and add the universe repository
+RUN apt install -y software-properties-common \
+    && add-apt-repository universe
+
+# Update package list and install curl
+RUN apt update && apt install -y curl
+
+# Add the ROS 2 key
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# Add the ROS 2 repository
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# Update package list and upgrade packages
+RUN apt update && apt upgrade -y
+
+# Install ROS 2 packages
+RUN apt install -y ros-humble-desktop ros-dev-tools
+
+# Source ROS 2 setup script and add to bashrc
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
+# Create non-root user 'rgp' with sudo privileges
+ARG USERNAME=rosusr
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Switch to the new user
+USER $USERNAME
+
+# Add metadata labels
+LABEL maintainer="https://github.com/Srindot"
+LABEL org.opencontainers.image.source="https://github.com/Srindot"
+
+# Copy and set permissions for entrypoint script
+COPY --chown=rgp:rgp ros_entrypoint.sh /ros_entrypoint.sh
+RUN chmod +x /ros_entrypoint.sh
+
+# Setup entrypoint
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
