@@ -1,8 +1,8 @@
-# ROS2 and PX4 Development Environment
+# Docker File for ROS2 Humble
 
-This repository provides a Dockerized development environment for:
-1. **ROS2 Humble** setup.
-2. **ROS2 Gazebo and PX4** integration setup.
+This repo provides a Dockerized development environment for:
+1. **ROS2(Humble)** setup.
+2. **ROS2(Humble), Gazebo(Ignition) and PX4** integration setup.
 
 ---
 
@@ -14,13 +14,10 @@ This repository provides a Dockerized development environment for:
 ---
 
 ## Cloning the Repository
-
-To start, clone this repository using:
-
-\\ git clone https://github.com/Srindot/<repository-name>.git
-cd <repository-name>
-\\
-
+For setting up the environment clone this repository:
+bash'''
+gitclone
+'''
 1. ROS2 Humble Setup
 Building the Docker Image
 Navigate to the ros2-humble folder:
