@@ -118,5 +118,6 @@ USER rosusr
 # Set the working directory for the new user
 WORKDIR /home/rosusr
 
+# Removed cause its not needed
 # # Add instructions for running QGroundControl
 # CMD ["/usr/local/bin/QGroundControl"]
