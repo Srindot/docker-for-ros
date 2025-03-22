@@ -62,7 +62,6 @@ RUN apt-get update && apt-get install -y locales apt-utils && \
     locale-gen en_US.UTF-8 && \
     update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
-
 # Add ROS2 repository and install ROS2 Humble
 RUN apt-get install -y software-properties-common && \
     add-apt-repository universe && \
@@ -71,7 +70,7 @@ RUN apt-get install -y software-properties-common && \
     sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" > /etc/apt/sources.list.d/ros2.list' && \
     apt-get update && apt-get upgrade -y && \
     apt-get install -y ros-humble-desktop ros-dev-tools && \
-    echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+    echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc
 
 # Install Python packages and downgrade setuptools
 RUN python3 -m pip install --upgrade pip && \
@@ -97,3 +96,14 @@ RUN git clone -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && 
 RUN usermod -a -G dialout root && \
     apt-get remove modemmanager -y && \
     apt-get install -y gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor-dev wget
+
+# Create a new user named 'rosusr' with a home directory
+RUN useradd -ms /bin/bash rosusr && \
+    apt-get install -y sudo && \
+    echo "rosusr ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Switch to the new user
+USER rosusr
+
+# Set the working directory for the new user
+WORKDIR /home/rosusr
