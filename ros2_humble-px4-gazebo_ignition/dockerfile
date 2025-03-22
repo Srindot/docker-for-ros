@@ -51,8 +51,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
     wget \
     xsltproc \
     zip \
-    gedit && \
-    apt-get -y autoremove && \
+    gedit \
+    fuse \
+    && apt-get -y autoremove && \
     apt-get clean && \
     rm -rf /tmp/* /var/tmp/*
 
