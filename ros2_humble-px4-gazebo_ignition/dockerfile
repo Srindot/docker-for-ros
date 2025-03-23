@@ -105,3 +105,21 @@ RUN apt-get update && apt-get install -y \
     apt-get remove modemmanager -y && \
     wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage -O /usr/local/bin/QGroundControl && \
     chmod +x /usr/local/bin/QGroundControl
+
+# Create a non-root user named 'rosusr'
+RUN useradd -ms /bin/bash rosusr && \
+    echo "rosusr ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    usermod -a -G dialout rosusr
+
+# Change ownership of critical files for 'rosusr'
+RUN chown -R rosusr:rosusr /PX4-Autopilot
+
+# Switch to the non-root user
+USER rosusr
+
+# Set the working directory for the user
+WORKDIR /home/rosusr
+
+# # Command to execute QGC automatically on container start (uncomment to enable)
+# # Default entry command
+# CMD ["/usr/local/bin/QGroundControl"]
