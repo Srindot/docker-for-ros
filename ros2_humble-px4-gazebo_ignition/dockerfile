@@ -1,7 +1,6 @@
-# Use the base Ubuntu Jammy image
+# Base Image 
 FROM ubuntu:jammy
 
-# Add a label with handler and GitHub link
 LABEL handler="Srindot"
 LABEL github="https://github.com/Srindot"
 
