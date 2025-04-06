@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
+    
 # Update system and install required packages including apt-utils
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
     apt-utils \

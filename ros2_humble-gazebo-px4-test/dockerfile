@@ -1,0 +1,55 @@
+# Base Image 
+FROM ros2-humble-dev:latest
+
+# Label 
+LABEL handler="Srindot"
+LABEL github="https://github.com/Srindot"
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive 
+
+# Setting the working directory
+WORKDIR /home/rosusr
+
+# Switch to the non-root user (already created in the base image)
+USER rosusr
+
+# Install Python packages and downgrade setuptools
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install --user --break-system-packages empy==3.3.4 pyros-genmsg setuptools==70.0.0
+
+# Clone PX4 repository and set up the environment
+RUN git clone https://github.com/PX4/PX4-Autopilot.git --recursive && \
+    cd PX4-Autopilot && \
+    bash ./Tools/setup/ubuntu.sh && \
+    make px4_sitl
+
+# MicroXrceDDS Agent
+USER root
+
+# Clone and build Micro XRCE-DDS Agent with fixed FastDDS tag
+RUN git clone -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && \
+    cd Micro-XRCE-DDS-Agent && \
+    sed -i '99s/.*/set(_fastdds_tag 2.12.1)/' CMakeLists.txt && \
+    mkdir build && cd build && \
+    cmake .. && \
+    make && \
+    make install && \
+    ldconfig /usr/local/lib/
+
+# Install QGroundControl dependencies and download the AppImage
+RUN apt-get update && apt-get install -y \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-libav \
+    gstreamer1.0-gl \
+    libfuse2 \
+    libxcb-xinerama0 \
+    libxkbcommon-x11-0 \
+    libxcb-cursor-dev && \
+    apt-get remove modemmanager -y && \
+    wget https://d176tv9ibo4jno.cloudfront.net/latest/QGroundControl.AppImage -O /usr/local/bin/QGroundControl && \
+    chmod +x /usr/local/bin/QGroundControl
+
+# Switch back to the non-root user
+USER rosusr
+
