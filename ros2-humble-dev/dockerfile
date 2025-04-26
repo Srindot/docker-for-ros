@@ -1,11 +1,21 @@
 # Base Image
 FROM ubuntu:jammy
 
+
+# Add the following labels
+LABEL org.opencontainers.image.description="ROS 2 Humble development environment"
+LABEL org.opencontainers.image.title="ROS2_Humble_Dev"
+LABEL org.opencontainers.image.vendor="Srindot"
+LABEL org.opencontainers.image.source="https://github.com/Srindot/RPN-CourseProject-2k25.git"
+LABEL org.opencontainers.image.licenses="MIT"
+
+
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=humble
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
+ENV user = rosusr
 
 # Ensure /tmp is writable
 RUN chmod 1777 /tmp

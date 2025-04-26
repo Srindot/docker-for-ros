@@ -1,6 +1,7 @@
 # Docker File for ROS2 Humble
 
 This repo provides a Dockerized development environment for:
+
 1. **ROS2(Humble)** setup.
 2. **ROS2(Humble), Gazebo(Ignition) and PX4** integration setup.
 
@@ -14,13 +15,15 @@ This repo provides a Dockerized development environment for:
 ---
 
 ## Cloning the Repository
+
 For setting up the docker environment clone this repository:
 
-```bash 
+```bash
 git clone https://github.com/Srindot/ROS-docker-setup.git
 ```
 
 ### 1. ROS2 Humble Setup
+
 To build the Docker Image
 
 Navigate to the ROS-docker-setup/ros2-humble folder:
@@ -28,15 +31,17 @@ Navigate to the ROS-docker-setup/ros2-humble folder:
 ```bash
 cd ROS-docker-setup/ros2-humble
 ```
+
 Build the docker file with the following command.
 
-```bash 
+```bash
 docker build -t ros2humble:latest .
 ```
+
 After building the docker image, a container can be created with the name as `myros` using the built image by the following command
 
 ```bash
-docker run -it \
+xhost +local:docker && docker run -it \
   --name myros \
  --privileged \
   -e DISPLAY=$DISPLAY \
@@ -48,12 +53,16 @@ docker run -it \
   --volume /tmp/.X11-unix:/tmp/.X11-unix \
   --volume /home/$(whoami)/.Xauthority:/root/.Xauthority:ro \
   ros2humble:latest
+
 ```
+
 To exit the container
-```bash 
+
+```bash
 exit
 ```
-To stop the container 
+
+To stop the container
 
 ```bash
 docker stop myros
@@ -65,33 +74,36 @@ To start the container again
 docker start myros 
 ```
 
-To enter to the bash 
-``` bash
+To enter to the bash
+
+```bash
 docker exec -it myros /bin/bash
 ```
 
-To remove the container 
+To remove the container
 
-```bash 
+```bash
 rm -f myros
 ```
 
 ### 1. ROS2 Gazebo Humble Setup
+
 To start off, navigate to Ros2 gazebo folder
 
 ```bash
 cd ros2_humble-px4-gazebo_ignition
 ```
 
-then, build the docker file 
-``` bash 
+then, build the docker file
+
+```bash
 docker build -t ros2gzpx4:latest .
 ```
 
 After the image is built, run a contianer named `rosgzpx4` by the following command
 
-```bash 
-docker run -it \
+```bash
+xhost +local:docker && docker run -it \
   --name rosgzpx4 \
  --privileged \
   -e DISPLAY=$DISPLAY \
@@ -104,11 +116,14 @@ docker run -it \
   --volume /home/$(whoami)/.Xauthority:/root/.Xauthority:ro \
   ros2gzpx4:latest
 ```
+
 To exit the container
-```bash 
+
+```bash
 exit
 ```
-To stop the container 
+
+To stop the container
 
 ```bash
 docker stop rosgzpx4
@@ -120,18 +135,20 @@ To start the container again
 docker start rosgzpx4 
 ```
 
-To enter to the bash 
-``` bash
+To enter to the bash
+
+```bash
 docker exec -it rosgzpx4 /bin/bash
 ```
 
-To remove the container 
+To remove the container
 
-```bash 
+```bash
 rm -f rosgzpx4
 ```
 
 ### Note
+
 Ensure your host system supports GUI applications (e.g., X11) for GUI tools to display correctly.
 
 If you face any issues, please open an issue in GitHub.
