@@ -6,20 +6,24 @@ This repositary provides a Dockerized development environment for :
 2. **ROS2(Humble), Gazebo(Ignition) and PX4** integration with **QGroundControl**
 
 
-## Cloning the Repository
 
-For setting up the docker environment clone this repository:
-
-```bash
-git clone https://github.com/Srindot/ROS-docker-setup.git
 ```
 
 ## **Usage**
 ____
 
+
 Make sure you have the following dependencies installed:
 - Docker
 - xhost
+
+
+### Cloning the Repository
+
+For setting up the docker environment clone this repository:
+
+```bash
+git clone https://github.com/Srindot/ROS-docker-setup.git
 
 To build the Docker Image
 
