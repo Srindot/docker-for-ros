@@ -8,14 +8,13 @@ This repositary provides a Dockerized development environment for :
 
 ## **Usage**
 
-____
 
 Make sure you have the following dependencies installed:
 - Docker
 - xhost
 
 
-### Cloning the Repository
+### Clone the Repository
 
 For setting up the docker environment clone this repository:
 
@@ -89,7 +88,6 @@ rm -f contianer_name
 
 
 ## Troubleshooting
-___
 
 Ensure your host system supports GUI applications (e.g., X11) for GUI tools to display correctly.
 
