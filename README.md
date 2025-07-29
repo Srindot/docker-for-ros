@@ -14,7 +14,8 @@ For setting up the docker environment clone this repository:
 git clone https://github.com/Srindot/ROS-docker-setup.git
 ```
 
-### **Usage**
+## **Usage**
+____
 
 Make sure you have the following dependencies installed:
 - Docker
@@ -84,8 +85,9 @@ rm -f contianer_name
 ```
 
 
-### Note
+## Troubleshooting
+___
 
 Ensure your host system supports GUI applications (e.g., X11) for GUI tools to display correctly.
 
-If you face any issues, please open an issue in GitHub.
+If you face any troubles, please open an issue in GitHub.
