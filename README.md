@@ -22,12 +22,10 @@ For setting up the docker environment clone this repository:
 git clone https://github.com/Srindot/ROS-docker-setup.git
 ```
 
-
-To build the Docker Image
-
-Navigate to one of the dockerfiles:
+To build the Docker Image, navigate to one of the dockerfiles in the project directory:
 
 For example like below
+
 ```bash
 cd ROS-docker-setup/ros2-humble
 ```
